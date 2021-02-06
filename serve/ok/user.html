@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find people on gitHub!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Neue', cursive;
+            letter-spacing: 1px;
+            box-sizing: border-box;
+
+
+
+        }
+
+        :root {
+            --bodyColor: #0d1117;
+            --headerColor: #161b22;
+        }
+
+        body {
+            background-color: var(--bodyColor);
+            overflow-x: hidden;
+        }
+
+        .header {
+            background-color: var(--headerColor);
+            height: 15vh;
+            width: 100vw;
+            margin-top: 0;
+            display: grid;
+            grid-template-columns: minmax(170px, 1fr);
+            grid-template-rows: 1fr;
+            align-items: center;
+            position: sticky;
+            border-bottom: solid 1px gray;
+
+        }
+
+        .notFound {
+            height: 80vh;
+            width: 100vw;
+
+        }
+
+        .notFound p {
+            color: rgb(209, 206, 206);
+            width: fit-content;
+
+            font-size: 2rem;
+            font-family: sans-serif;
+            padding-top: 30vh;
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+
+        .input {
+            height: 40%;
+            display: grid;
+            width: 40vw;
+            margin-left: 20vw;
+            background-color: var(--headerColor);
+
+
+        }
+
+        input {
+            position: inherit;
+            width: 100%;
+            background-color: var(--bodyColor);
+            color: white;
+            border: .2vw solid gray;
+            outline: none;
+            border-radius: 10px;
+            padding: .5vw;
+            font-size: 1.5rem;
+
+        }
+
+        input::placeholder {
+            font-size: calc(100vh/100vw);
+            color: rgb(184, 179, 179);
+        }
+
+        input:focus {
+            border: .2vw solid rgb(35, 167, 228);
+
+        }
+
+        button a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .repos {
+            overflow: hidden;
+
+        }
+
+        .repoTitle {
+
+            font-size: 135%;
+        }
+
+        .repoTitle a {
+            color: #58a6ff;
+        }
+
+
+        @media screen and (max-width: 600px) {
+            body {
+                background-color: black;
+            }
+
+            .body {
+                height: 80vh;
+                width: 100vw;
+                display: grid;
+                grid-template-rows: 30vh auto;
+                grid-template-columns: minmax(170px, 1fr);
+                grid-gap: 2vh;
+
+            }
+
+            .header {
+                justify-items: center;
+                height: 15vh;
+                align-content: center;
+            }
+
+            .input {
+
+                height: 50%;
+                margin: 0;
+                width: 80%;
+            }
+
+            input {
+                padding: 7px 0px 7px 5px;
+
+                background-color: #000;
+            }
+
+            .details {
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: minmax(60%, 4fr) minmax(40%, 3fr);
+                padding: 1vh;
+
+
+            }
+
+            .user {
+
+                display: flex;
+                height: 100%;
+            }
+
+            .userInfo:nth-child(2) {
+                padding: 2vh;
+                padding-left: 3vh;
+
+
+            }
+
+            .userInfoId {
+
+                line-height: 6vh;
+            }
+
+            #name {
+                font-size: 1.6rem;
+                display: block;
+                font-weight: bold;
+                color: white;
+                font-family: sans-serif;
+            }
+
+            #userName {
+                font-size: 1.2rem;
+                color: rgb(202, 200, 200);
+                font-family: sans-serif;
+            }
+
+            #userImage {
+                background-color: white;
+                border-radius: 50%;
+                align-self: center;
+                /* size: 40%; */
+                height: 100%;
+                width: 17vh;
+                margin-left: 5vw;
+            }
+
+            .bio {
+                display: flex;
+                padding-top: 1vw;
+                padding-bottom: 1vw;
+
+            }
+
+            #bio {
+                margin-top: 2vh;
+                color: white;
+                width: 50vw;
+                font-size: .9rem;
+                height: 3.6rem;
+
+
+                text-overflow: ellipsis;
+                overflow: scroll;
+            }
+
+            .bioDetails {
+                width: 90%;
+                display: flex;
+
+                flex-direction: column;
+
+                align-items: center;
+            }
+
+            #gps,
+            #following,
+            #followers {
+
+
+                color: white;
+                padding-left: 2ch;
+                display: block;
+            }
+
+            #gps span,
+            #following span,
+            #followers span {
+                font-size: 1.4rem;
+            }
+
+            .repos-box {
+                border-top: .2vw solid gray;
+                margin-top: .8vh;
+
+                padding-top: 0;
+                font-size: 1.2rem;
+                color: white;
+            }
+
+            .repos {
+                background-color: #161b22;
+                margin: 4vw;
+
+                height: 20vh;
+                border: gray .3vw solid;
+                border-radius: 10px;
+                padding: 2vw;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+            }
+
+            .language {
+                list-style-type: disc;
+            }
+
+            .seeAll {
+                margin: 3vh;
+
+            }
+
+            .seeAll button {
+                border: .5px solid rgb(161, 161, 161);
+                width: 100%;
+                outline: none;
+
+                height: 5vh;
+                background-color: #161b22;
+                color: white;
+                border-radius: 8px;
+            }
+
+            .seeAll button:active {
+                background-color: #2c333d;
+
+            }
+
+            .activities {
+                margin-top: 2vh;
+                border-top: .2vw solid gray;
+
+            }
+
+            .activ {
+
+                margin: 3vw;
+                text-align: center;
+                font-size: 1.2rem;
+                color: rgb(108, 230, 108);
+                display: flex;
+                flex-direction: column;
+            }
+
+            .activ img {
+                height: 100%;
+                width: 100%;
+
+            }
+
+            .activ .date {
+                color: rgb(255, 255, 255);
+                font-size: .9rem;
+            }
+        }
+
+        @media screen and (min-width: 600px) {
+            .header {
+                height: 15vh;
+            }
+
+            .input {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .body {
+                display: grid;
+                grid-template-columns: 1fr 2fr;
+                grid-template-rows: auto;
+                grid-gap: 1vh;
+
+            }
+
+            .user {
+                display: flex;
+                flex-direction: column;
+
+                width: 100%;
+            }
+
+            #userImage {
+                height: 90%;
+                width: 90%;
+                align-self: center;
+                border-radius: 50%;
+                border: .2vh gray solid;
+                position: relative;
+                bottom: 4vw;
+                background-color: white;
+            }
+
+            .userInfo:nth-child(2) {
+                /* margin-left: 2vw; */
+                position: relative;
+                bottom: 4vw;
+
+            }
+
+            #name {
+                margin-top: 2vh;
+                font-size: 3vw;
+                display: block;
+                font-weight: bold;
+                padding-left: 4vw;
+                width: 100%;
+                color: white;
+                font-family: sans-serif;
+
+
+
+            }
+
+            #userName {
+                font-size: 1.5vw;
+                color: rgb(173, 173, 173);
+                align-self: center;
+                padding-left: 4vw;
+                font-family: sans-serif;
+
+            }
+
+            .bio {
+                width: 100;
+                padding: 2vw;
+                color: white;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                bottom: 4vh;
+
+            }
+
+            #bio {
+                margin-bottom: 4vh;
+                height: 7vw;
+                overflow: hidden;
+            }
+
+            .bioDetails {
+                border-top: gray .2vw solid;
+                padding-top: 3vh;
+                text-align: center;
+            }
+
+            #gps,
+            #following,
+            #followers {
+                margin-top: 2vw;
+                color: white;
+                padding: 1vw;
+            }
+
+            #gps span,
+            #following span,
+            #followers span {
+                font-size: 1.4rem;
+            }
+
+            .repos-box {
+                margin: 4vw;
+
+                color: white;
+            }
+
+            .repos-box p {
+                font-size: 1.6rem;
+            }
+
+            .repo-grid {
+                margin-top: 2vh;
+                display: grid;
+                grid-gap: 1vw;
+                grid-template-rows: auto;
+                grid-template-columns: 1fr 1fr;
+
+            }
+
+            .repos {
+                background-color: #161b22;
+
+                height: 10vw;
+                border: gray .2vw solid;
+                border-radius: 10px;
+                padding: 2vw;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+            }
+
+            .seeAll button {
+                border: .5px solid rgb(161, 161, 161);
+                width: 100%;
+                outline: none;
+                margin: 3vh;
+                height: 6vh;
+                background-color: #161b22;
+                color: white;
+                border-radius: 8px;
+            }
+
+            .seeAll button:active {
+                background-color: #2c333d;
+
+            }
+
+            .activities {
+                margin-top: 3vw;
+            }
+
+            .activ {
+
+                margin: 3vw;
+                text-align: center;
+                font-size: 1.2rem;
+                color: rgb(108, 230, 108);
+                display: flex;
+
+                flex-direction: column;
+
+            }
+
+            .activ img {
+                height: 100%;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+
+            }
+
+            .activ .date {
+                color: rgb(255, 255, 255);
+                font-size: .9rem;
+            }
+
+        }
+
+        .displayNone {
+            display: none !important;
+        }
+    </style>
+
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="input">
+            <input type="text" placeholder="Search by Username..." value="">
+        </div>
+    </div>
+    <div class="notFound displayNone" id="notFound">
+        <p>User Not Found</p>
+    </div>
+    <div class="body">
+        <div class="details">
+            <div class="user">
+                <img clas=userInfo src="" alt="userImage" id="userImage">
+
+                <div class="userInfo">
+                    <span class="userInfoId" id="name">raj</span>
+                    <span class="userInfoId" id="userName">soni</span>
+
+                </div>
+
+            </div>
+            <div class="bio">
+                <div>
+                    <p id="bio"></p>
+                </div>
+                <div class="bioDetails">
+                    <span id='gps'>☥ :<span></span></span>
+                    <span id="following">Following:<span></span></span>
+                    <span id="followers">Followers:<span></span></span>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="repos-box">
+            <p>Popular Repositories</p>
+            <div class="repo-grid">
+
+            </div>
+            <div class='seeAll'>
+
+            </div>
+            <div class="activities">
+                <p>Activities</p>
+                <div class="activ">
+                    <img src="https://github.githubassets.com/images/modules/profile/profile-joined-github-dark.svg"
+                        alt="image">
+                    <span class="joined">Joined on <br><span class='date'></span></span>
+                    <br><span class="lastUpdated">lastUpdated on <br> <span class='date'></span></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let input = document.querySelector('.input input');
+        let image = document.querySelector('#userImage');
+        let inputValue = '';
+        let url = 'https://api.github.com/users/';
+        let name = document.querySelector("#name");
+        let userName = document.querySelector("#userName");
+        let bio = document.querySelector('#bio');
+        let loc = document.querySelector('#gps span')
+        let following = document.querySelector('#following span')
+        let followers = document.querySelector('#followers span')
+        let joined = document.querySelectorAll('.date')[0]
+        let update = document.querySelectorAll('.date')[1]
+
+
+        let timeOut = null;
+        document.addEventListener('DOMContentLoaded', empty)
+        document.addEventListener('keyup', function () {
+            clearTimeout(timeOut)
+            timeOut = setTimeout(() => {
+                empty
+                show();
+            }, 600);
+        })
+
+
+        async function show() {
+            if (!input.value) {
+                empty()
+                return;
+            }
+            clear();
+
+            inputValue = input.value;
+
+            const response = await fetch(url + `${inputValue}`)
+            if (!response.ok) {
+                userNotFound();
+                return;
+            }
+
+            const json = await response.json();
+            console.log(json)
+
+            if (json.public_repos != 0) {
+                document.querySelector('.repos-box p').style.display = '';
+                const repoResponse = await fetch(json.repos_url)
+
+                const repoJson = await repoResponse.json()
+                console.log(Boolean(repoJson) + 'repoJson' + repoJson)
+
+                console.log(repoJson)
+                if (json.public_repos < 6) {
+                    addRepos(json.public_repos, repoJson);
+                } else {
+                    addRepos(6, repoJson);
+                    addButton(json.html_url + '?tab=repositories');
+                }
+
+            } else if (json.public_repos == 0) {
+
+                document.querySelector('.repos-box p').style.display = 'none';
+                document.querySelector('.activities').style.border = 'none';
+            }
+
+            image.src = json.avatar_url;
+            name.innerHTML = json.name;
+            bio.innerHTML = json.bio;
+            following.innerHTML = json.following;
+            followers.innerHTML = json.followers;
+            userName.innerHTML = json.login;
+            loc.innerHTML = json.location;
+            joined.innerHTML = json.created_at.match(/^([^t])+/ig)[0];
+            update.innerHTML = json.updated_at.match(/^([^t])+/ig)[0];
+
+            image.addEventListener('load', empty)
+
+            console.log(json)
+        }
+
+
+        function clear() {
+            document.querySelector('.repo-grid').innerHTML = '';
+            document.querySelector('.seeAll').innerHTML = '';
+        }
+        function addRepos(num, repoJso) {
+            console.log(num, repoJso)
+            for (let i = 0; i < num; i++) {
+
+                document.querySelector('.repo-grid').insertAdjacentHTML('afterbegin', `
+        <div class="repos">
+           <span class="repoTitle"><a href="${repoJso[i].html_url}" target="_blank" rel="noopener noreferrer">${repoJso[i].full_name}</a></span>
+           <span class="repoDiscription">${repoJso[i].description}</span>
+           <span class="language"><li>${repoJso[i].language}</li></span>
+        </div>`)
+
+            }
+        }
+        function addButton(href) {
+            document.querySelector('.seeAll').insertAdjacentHTML('afterbegin', `<a href="${href}" target="_blank" rel="noopener noreferrer" ><button>See All</button></a>`)
+        }
+        function empty() {
+            if (!input.value) {
+                document.querySelector('.body').classList.add('displayNone');
+                document.querySelector('#notFound').classList.add('displayNone')
+                return;
+            }
+            document.querySelector('#notFound').classList.add('displayNone')
+            document.querySelector('.body').classList.remove('displayNone');
+
+
+        }
+        function userNotFound() {
+            document.querySelector('.body').classList.add('displayNone')
+            document.querySelector('#notFound').classList.remove('displayNone')
+
+        }
+
+    </script>
+</body>
+
+</html>
